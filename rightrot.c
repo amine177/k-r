@@ -13,7 +13,5 @@ int main(void)
 
 unsigned rightrot(unsigned x, int n, int l)
 {
-  unsigned y = (x &  ~(~0 << n));
-  unsigned z = x >> n;
-  return z | (y << (l - n));
+  return (x >> n) | ((x & ~(~0 << n)) << (l - n));
 }
