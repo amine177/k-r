@@ -5,7 +5,7 @@ unsigned getbits(unsigned x, int p, int n);
 
 int main(void)
 {
-  char c = getchar();
+  int c = getchar();
   printf("c: %#x\ngetbits(%c, %d, %d): %x", c, c, 3, 4, getbits(c, 3, 4));
 }
 

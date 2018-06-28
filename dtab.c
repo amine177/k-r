@@ -20,7 +20,7 @@ int main(void)
 
 int getline_(char s[])
 {
-  char c;
+  int c;
   int i = 0;
   while ((c = getchar()) != EOF && c != '\n')
     s[i++] = c;

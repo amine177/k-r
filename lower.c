@@ -5,7 +5,7 @@ char lower(char c);
 
 int main(void)
 {
-  char c;
+  int c;
   printf("Enter a character:\n");
   c = getchar();
   printf("c: %c, lower(c): %c", c, lower(c));

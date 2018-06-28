@@ -9,7 +9,7 @@ int main(void)
   printf("Delimiter reached!\n");
   scanf("%f", &x);
 
-  char c;
+  int c;
   c = getchar();
   printf("a");
   printf("%c", c);

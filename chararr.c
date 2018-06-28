@@ -4,7 +4,7 @@
 int main(void)
 {
   char s[3];
-  char c;
+  int c;
   c = getchar();
   s[0] = c;
   printf("\n%c", *s);

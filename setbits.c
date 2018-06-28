@@ -5,7 +5,7 @@ unsigned setbits(unsigned, int, unsigned, int);
 
 int main(void)
 {
-  char c = getchar();
+  int c = getchar();
   int n = 4;
   int p = 3;
   getchar();

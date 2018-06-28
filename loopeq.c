@@ -5,7 +5,7 @@ int main(void)
 {
   char s[lim];
   int i;
-  char c;
+  int c;
 
 
   for (i = 0; i < lim -1; ++i) {

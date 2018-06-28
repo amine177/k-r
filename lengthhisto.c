@@ -6,7 +6,7 @@
 int main(void)
 {
   int status, nbchar, i;
-  char c;
+  int c;
   int histogram[30];
 
   nbchar = 0;

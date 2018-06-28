@@ -3,7 +3,7 @@
 
 int main(void) {
   int count = 0;
-  char c;
+  int c;
 
   while((c = getchar()) != EOF)
     count++;

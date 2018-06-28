@@ -5,7 +5,7 @@ unsigned invert(unsigned, int, int);
 
 int main(void)
 {
-  char c = getchar();
+  int c = getchar();
   int n = 4;
   int p = 5;
   getchar();
