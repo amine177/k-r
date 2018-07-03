@@ -5,6 +5,7 @@
 int getop(char s[])
 {
   int i, c;
+  static int buf = EOF;
   //skip white spaces and tabs, save value otherwise
   while ((s[0] = c = getch()) == ' ' || c == '\t')
     ;
@@ -20,6 +21,6 @@ int getop(char s[])
       ;
   s[i] = '\0';
   if (c != EOF)
-    ungetch(c);
+    buf = c;
   return NUMBER;
 }
