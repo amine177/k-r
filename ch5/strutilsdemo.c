@@ -21,5 +21,7 @@ int main(void)
   printf("*cp: %s\n", cp);
   printf("cp: %x\n", cp);
   printf("c[0]: %c\n", c[0]);
+  strncatutil(sp, cp, 3);
+  printf("*sp: %s\n", sp);
   return 0;
 }

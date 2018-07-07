@@ -40,3 +40,15 @@ void strncpyutil(char *s, char *t, int n)
   
   *t = '\0';
 }
+
+
+void strncatutil(char *s, char *t, int n)
+{
+  while (*++s)
+    ;
+  while (*t && n) {
+    *s++ = *t++;
+    n--;
+  }
+  *s = '\0';
+}
