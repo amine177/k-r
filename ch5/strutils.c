@@ -31,3 +31,12 @@ int strendutil(char *s, char *t)
       return 0;
   return 1;
 }
+
+void strncpyutil(char *s, char *t, int n)
+{
+  char *x = t;
+  while ((*t++ = *s++) && --n)
+    ;
+  
+  *t = '\0';
+}
