@@ -9,6 +9,8 @@ char *lineptr[MAXLINES];
 int readlines(char *lineptr[], int lines, char *line);
 void writelines(char *lineptr[], int nlines);
 int getline_(char*, int);
+int rfstrcmp(char *s1, char *s2);
+int fstrcmp(char *s1, char *s2);
 
 void qsort_(void *lineptr[], int left, int right, int (*comp)(void *, void *));
 int numcmp(char *, char *);
@@ -17,29 +19,37 @@ int rstrcmp(char *, char *);
 
 int main(int argc, char *argv[])
 {
-  int nlines;
-  int numeric = 0, reverse = 0;
+  int nlines, i = 0, c;
+  int numeric = 0, reverse = 0, fold = 0;
   char *s = malloc(MAXCHARS);
   while (--argc)
     if ((*++argv)[0] == '-')
-      switch ((*argv)[1]) {
-        case 'r':
-          reverse = 1;
-          break;
-        case 'n':
-          numeric = 1;
-          break;
-        default:
-          break;
-      }
-  printf("reverse: %d, numeric: %d\n", reverse, numeric);
+      while (c = (*argv)[++i])
+        switch (c) {
+          case 'r':
+            reverse = 1;
+            break;
+          case 'n':
+            numeric = 1;
+            break;
+          case 'f':
+            fold = 1;
+            break;
+          default:
+            printf("Unkown argument: -%c\n", c);
+            exit(1);
+            break;
+        }
+  printf("reverse: %d, numeric: %d, fold: %d\n", reverse, numeric, fold);
   if ((nlines = readlines(lineptr, MAXLINES, s)) >= 0) {
     printf("\n***sorting***\n");
     qsort_((void **) lineptr, 0, nlines-1,
         (int (*)(void*, void*)) (
           numeric ?
-          reverse ? rnumcmp: numcmp :
-          reverse ? rstrcmp: strcmp));
+            reverse ? rnumcmp: numcmp :
+            reverse ? 
+              fold ? rfstrcmp: rstrcmp :
+              fold ? fstrcmp : strcmp));
     writelines(lineptr, nlines);
     return 0;
   }
@@ -75,6 +85,21 @@ void swap(void *v[], int i, int j)
   v[j] = temp;
 }
 
+int rfstrcmp(char *s1, char *s2) {
+  int i = 0;
+  while (*(s1+i) == *(s2+i) |
+      abs(*(s1+i) - *(s2+i)) == abs(('a' - 'A')))
+    i++;
+  if (!*(s1+i))
+    return 0;
+  if (*(s1+i) > *(s2+i))
+    return -1;
+  return 1;
+}
+
+int fstrcmp(char *s1, char *s2) {
+  return -rfstrcmp(s1, s2);
+}
 int numcmp(char *s1, char *s2)
 {
   double v1, v2;
