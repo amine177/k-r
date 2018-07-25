@@ -12,18 +12,34 @@ int getline_(char*, int);
 
 void qsort_(void *lineptr[], int left, int right, int (*comp)(void *, void *));
 int numcmp(char *, char *);
+int rnumcmp(char *, char *);
+int rstrcmp(char *, char *);
 
 int main(int argc, char *argv[])
 {
   int nlines;
-  int numeric = 0;
+  int numeric = 0, reverse = 0;
   char *s = malloc(MAXCHARS);
-  if (argc > 1 && strcmp(argv[1], "-n") == 0)
-    numeric = 1;
+  while (--argc)
+    if ((*++argv)[0] == '-')
+      switch ((*argv)[1]) {
+        case 'r':
+          reverse = 1;
+          break;
+        case 'n':
+          numeric = 1;
+          break;
+        default:
+          break;
+      }
+  printf("reverse: %d, numeric: %d\n", reverse, numeric);
   if ((nlines = readlines(lineptr, MAXLINES, s)) >= 0) {
     printf("\n***sorting***\n");
     qsort_((void **) lineptr, 0, nlines-1,
-        (int (*)(void*, void*)) (numeric ? numcmp : strcmp));
+        (int (*)(void*, void*)) (
+          numeric ?
+          reverse ? rnumcmp: numcmp :
+          reverse ? rstrcmp: strcmp));
     writelines(lineptr, nlines);
     return 0;
   }
@@ -70,6 +86,16 @@ int numcmp(char *s1, char *s2)
     return 1;
   else
     return 0;
+}
+
+int rnumcmp(char *s1, char *s2)
+{
+  return -numcmp(s1, s2);
+}
+
+int rstrcmp(char *s1, char *s2)
+{
+  return -strcmp(s1, s2);
 }
 
 char buffer[MAXCHARS];
