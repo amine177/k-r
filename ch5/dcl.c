@@ -16,6 +16,7 @@ char token[MAXTOKEN];
 char name[MAXTOKEN];
 char datatype[MAXTOKEN];
 char out[1000];
+int error = 0;
 
 int main(void)
 {
@@ -23,8 +24,16 @@ int main(void)
     strcpy(datatype, token);
     out[0] = '\0';
     dcl();
-    if (tokentype != '\n')
-      printf("syntax error\n");
+    if (tokentype != '\n' || error) {
+      printf("syntax error, tokentype: %c\n", tokentype);
+      if (tokentype != '\n')
+        while(gettoken()!='\n')
+          ;
+      if (error)
+        error = 0;
+      continue;
+    }
+
     printf("%s: %s %s\n", name, out, datatype);
   }
   return 0;
@@ -50,8 +59,11 @@ void dirdcl(void)
       printf("error: missing )\n");
   } else if (tokentype == NAME)
     strcpy(name, token);
-  else
+  else {
     printf("error: expected name or (dcl)\n");
+    error = 1;
+    return;
+  }
   while ((type=gettoken()) == PARENS || type == BRACKETS)
     if (type == PARENS)
       strcat(out, " function returning");

@@ -19,3 +19,8 @@ void ungetch(int c)
   else
     printf("error, too many charcters\n");
 }
+
+void reset()
+{
+  bufp = 0;
+}
