@@ -22,23 +22,34 @@ int main(int argc, char *argv[])
 {
   if (argc == 2)
     if (*(*(++argv)+1) == 'u') {
-      int type;
+      int type, ptr = 0;
+      char p[100];
       char temp[MAXTOKEN];
       
        while (gettoken() != EOF) {
-       strcpy(out, token);
-       while ((type = gettoken()) != '\n')
-       if (type == PARENS || type == BRACKETS)
-       strcat(out, token);
-       else if (type == '*') {
-       sprintf(temp, "(*%s)", out);
-       strcpy(out, temp);
-       } else if (type == NAME) {
-       sprintf(temp, "%s %s", token, out);
-       strcpy(out, temp);
-       } else
-       printf("invalid input at %s\n", token);
-       printf("%s\n", out);
+         strcpy(out, token);
+         while ((type = gettoken()) != '\n')
+           if (type == PARENS || type == BRACKETS)
+             strcat(out, token);
+           else if (type == '*') {
+             p[ptr++] = '*';
+             while ((type = gettoken()) == '*' || type == ' ' ) {
+               if (type == '*')
+                 if (ptr < 100)
+                   p[ptr++] = '*';
+                 else
+                   break;
+             }
+             p[ptr]='\0';
+             ptr = 0;
+             sprintf(temp, "(%s%s)", p,out);
+             strcpy(out, temp);
+         } else if (type == NAME) {
+             sprintf(temp, "%s %s", token, out);
+             strcpy(out, temp);
+         } else
+           printf("invalid input at %s\n", token);
+         printf("%s\n", out);
        } 
     }
     else
