@@ -18,24 +18,46 @@ char datatype[MAXTOKEN];
 char out[1000];
 int error = 0;
 
-int main(void)
+int main(int argc, char *argv[])
 {
-  while (gettoken() != EOF) {
-    strcpy(datatype, token);
-    out[0] = '\0';
-    dcl();
-    if (tokentype != '\n' || error) {
-      printf("syntax error, tokentype: %c\n", tokentype);
-      if (tokentype != '\n')
-        while(gettoken()!='\n')
-          ;
-      if (error)
-        error = 0;
-      continue;
+  if (argc == 2)
+    if (*(*(++argv)+1) == 'u') {
+      int type;
+      char temp[MAXTOKEN];
+      
+       while (gettoken() != EOF) {
+       strcpy(out, token);
+       while ((type = gettoken()) != '\n')
+       if (type == PARENS || type == BRACKETS)
+       strcat(out, token);
+       else if (type == '*') {
+       sprintf(temp, "(*%s)", out);
+       strcpy(out, temp);
+       } else if (type == NAME) {
+       sprintf(temp, "%s %s", token, out);
+       strcpy(out, temp);
+       } else
+       printf("invalid input at %s\n", token);
+       printf("%s\n", out);
+       } 
     }
+    else
+      while (gettoken() != EOF) {
+        strcpy(datatype, token);
+        out[0] = '\0';
+        dcl();
+        if (tokentype != '\n' || error) {
+          printf("syntax error, tokentype: %c\n", tokentype);
+          if (tokentype != '\n')
+            while(gettoken()!='\n')
+              ;
+          if (error)
+            error = 0;
+          continue;
+        }
 
-    printf("%s: %s %s\n", name, out, datatype);
-  }
+        printf("%s: %s %s\n", name, out, datatype);
+      }
   return 0;
 }
 void dcl(void)
