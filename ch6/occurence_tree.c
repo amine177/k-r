@@ -89,10 +89,10 @@ void treeprint(struct tnode *p, int indent)
 {
   int i;
   if (p != NULL) {
-    treeprint(p->left, indent+1);
     for (i = 0; i < indent; i++)
       printf("\t");
     printf("%4d %s\n", p->count, p->value);
+    treeprint(p->left, indent+1);
     treeprint(p->right, indent+1);
   }
 }
