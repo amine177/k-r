@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
+#include "bufutilsparser.h"
 
 
 struct nlist {
@@ -9,6 +11,35 @@ struct nlist {
   char *defn;
 };
 
+int getword(char *, int);
+static struct nlist *install(char *, char *);
+#define MAXWORD 100
+int main(int argc, char **argv)
+{
+
+  char s[MAXWORD];
+  char *name, *defn;
+
+  while (getword(s, MAXWORD) != EOF) {
+    if (strcmp(s, "#define") == 0) {
+      getword(s, MAXWORD);
+      if (isalpha(s[0])) {
+        name = malloc(sizeof(strlen(s)));
+        getword(s, MAXWORD);
+        if (isalpha(s[0])) {
+          defn = malloc(sizeof(strlen(s)));
+          install(name, defn);
+        }
+        else {
+          free(name);
+          printf("invalid #define\n");
+        }
+      } else {
+        printf("invalid #define\n");
+      }
+    }
+  }
+}
 
 #define HASHSIZE 101
 
@@ -39,7 +70,7 @@ struct nlist *lookup(char *s)
 
 
 
-struct nlist *instal(char *name, char *defn)
+struct nlist *install(char *name, char *defn)
 {
   struct nlist *np;
   unsigned hashvalue;
@@ -79,3 +110,28 @@ void undef(char *name, char *defn)
       }
 
 }
+
+
+int getword(char *s, int n)
+{
+  int c;
+  while ((c = getch()) == ' ')
+    ;
+
+  if (c != EOF && --n >= 0)
+    *s++ = c;
+
+  if (!isalpha(c) && c != '#') {
+    *s = '\0';
+    return c;
+  }
+
+  while ((isalpha(c = getch()) || c == '_') && --n > 0)
+    *s++ = c;
+
+  if (!isalpha(c))
+    ungetch(c);
+  *s = '\0';
+  return s[0];
+}
+
