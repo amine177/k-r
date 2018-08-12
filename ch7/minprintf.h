@@ -1,0 +1,3 @@
+
+
+void minprintf(char *fmt, ...);
