@@ -110,10 +110,25 @@ print_number:
       putchar(' ');
   goto loop;
 print_string:
-  p++;
+  sval = va_arg(ap, char *);
+  width -= (strlen(sval) - precision != DEFAULT_MINUS ? precision: 0);
+  if (minus == DEFAULT_MINUS)
+    while (width-- > 0)
+      putchar(' ');
+  if (precision != DEFAULT_MINUS)
+    while (*sval && precision-- > 0)
+      putchar(*sval++);
+  else
+    while (*sval)
+      putchar(*sval++);
+  if (minus != DEFAULT_MINUS)
+    while (width-- > 0)
+      putchar(' ');
+  goto loop;
 }
 
 int main(int argc, char *argv[])
 {
   realprintf("%-3di am\n here, number:%3.2d\n", 3, 1);
+  realprintf("%-13.3sso\n", "i am here");
 }
