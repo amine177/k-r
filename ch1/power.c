@@ -11,9 +11,10 @@ int main(void)
 
 int power(int base, int n)
 {
-  int i, p;
-  p = 1;
-  for (i = 1; i <= n; ++i)
-    p = p * base;
-  return p;
+  if (n == 0)
+    return 1;
+  else if (n == 1)
+    return base;
+  else
+    return base * power(base, n - 1);
 }
