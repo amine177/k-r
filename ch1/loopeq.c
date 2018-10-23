@@ -1,5 +1,6 @@
 #include <stdio.h>
 #define lim 10
+/*get a string of lim chars*/
 
 int main(void)
 {
