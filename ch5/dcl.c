@@ -1,3 +1,4 @@
+//parse a C variable declaration
 #include <string.h>
 #include <stdio.h>
 #include <ctype.h>
