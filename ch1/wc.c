@@ -5,28 +5,25 @@
 
 int main(void)
 {
-  int c, nl, nw, nc, state;
-  int print;
+  int nl, nw, nc, state;
+  char c;
 
-  state = OUT;
   nl = nw = nc = 0;
+  state = OUT;
   while ((c = getchar()) != EOF) {
-    ++nc;
-    if (c == '\n')
-      ++nl;
-    if ( c == ' ' || c == '\n' || c == '\t' && state != OUT)
-      state = OUT;
-    else if (state == OUT) {
-      state = IN;
-      ++nw;
-    }
-    if (state == IN && c != ' ' && c != '\n' && c != '\t') {
+    nc++;
+    if (c != ' ' && c != '\n' && c != '\t') {
       printf("%c", c);
-      print = OUT;
-    }
-    else if (print == OUT) {
-      printf("\n");
-      print = IN;
+      if (state == OUT)
+        state = IN;
+    } else {
+      if (state == IN) {
+        printf("\n");
+        state = OUT;
+        nw++;
+      }
+      if (c == '\n')
+        nl++;
     }
   }
   printf("%d %d %d\n", nl, nw, nc);
