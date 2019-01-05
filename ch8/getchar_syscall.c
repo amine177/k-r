@@ -11,7 +11,7 @@ int main()
   char c;
 
   while  ((c = getchar_()) != EOF)
-    putchar(c);
+    write(1, &c, 1);
 }
 
 
