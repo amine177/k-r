@@ -1,4 +1,5 @@
 #include <fcntl.h>
+#include <unistd.h>
 #include <stdio.h>
 
 
@@ -7,7 +8,7 @@ int main(int argc, char **argv)
   int fd;
 
   if (argc != 2) {
-    printf("Usage: open_test.o filename");
+    write(1, "Usage: open_test.o file", 23);
     return -1;
   }
 
