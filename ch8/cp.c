@@ -30,6 +30,7 @@ int main(int argc, char *argv[])
   if ((f2 = creat(argv[2], PERMS)) == -1) {
     printf("cp: can't create %s, mode %03o\n",
         argv[2], PERMS);
+    close(f1);
     return(-1);
   }
   while((n = read(f1, buf, sizeof buf)) > 0)
@@ -37,6 +38,9 @@ int main(int argc, char *argv[])
       printf("cp: write error on file %s\n", argv[2]);
       return(-1);
     }
+
+  close(f1);
+  close(f2);
 
   return 0;
 }
