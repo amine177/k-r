@@ -27,10 +27,13 @@ int main(int argc, char *argv[])
   if (nbytes >= 1024)
     error("can't read %d bytes\n", nbytes);
 
-  lseek(fd1, (long)offset, 0);
-  read(fd1, buf, nbytes-1);
-  buf[nbytes] = '\0';
-  printf("read: %s\n", buf);
+  if (lseek(fd1, (long)offset, 0) >= 0) {
+    read(fd1, buf, nbytes-1);
+    buf[nbytes] = '\0';
+    printf("read: %s\n", buf);
+  } else {
+    return -1;
+  }
 
   return 0;
 
