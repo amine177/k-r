@@ -1,46 +1,45 @@
 #include <fcntl.h>
-#include <stdio.h>
 #include <unistd.h>
-
-#ifdef PERMS
-#undef PERMS
-#endif
-
-#ifdef BUFSIZ
-#undef BUFSIZ
-#endif
+#include <stdio.h>
+#include <stdarg.h>
+#include <stdlib.h>
 
 #define PERMS 0666
+#undef BUFSIZ
 #define BUFSIZ 1024
 
 
+void error(char *, ...);
+
 int main(int argc, char *argv[])
 {
-  int f1, f2, n;
+  int src, dst;
+  int n;
   char buf[BUFSIZ];
 
-  if (argc != 3) {
-    printf("Usage: cp from to\n");
-    return(1);
-  }
-  if ((f1 = open(argv[1], O_RDONLY, 0)) == -1) {
-    printf("cp: can't open %s\n", argv[1]);
-    return(-1);
-  } 
-  if ((f2 = creat(argv[2], PERMS)) == -1) {
-    printf("cp: can't create %s, mode %03o\n",
-        argv[2], PERMS);
-    close(f1);
-    return(-1);
-  }
-  while((n = read(f1, buf, sizeof buf)) > 0)
-    if (write(f2, buf, n) != n) {
-      printf("cp: write error on file %s\n", argv[2]);
-      return(-1);
-    }
+  if (argc != 3)
+    error("cp source destination");
 
-  close(f1);
-  close(f2);
+  if ((src = open(*++argv, O_RDONLY, 0)) == -1)
+    error("can't open source file");
+  if ((dst = creat(*++argv, PERMS)) == -1)
+    error("can't open destination file");
+
+  while ((n = read(src, buf, sizeof buf)) > 0)
+    write(dst, buf, n);
 
   return 0;
+}
+
+void error(char *fmt, ...)
+{
+  va_list args;
+
+  va_start(args, fmt);
+  fprintf(stderr, "error: ");
+  vfprintf(stderr, fmt, args);
+  fprintf(stderr, fmt, args);
+  va_end(args);
+
+  exit(1);
 }
