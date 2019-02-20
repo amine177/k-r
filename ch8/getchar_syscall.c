@@ -1,28 +1,25 @@
 #include <unistd.h>
-#include <stdio.h>
 
+#define EOF -1
 
-int getchar_(void);
-void putchar_(char);
-
+int getchar(void);
 
 int main()
 {
+
   char c;
 
-  while  ((c = getchar_()) != EOF)
-    putchar_(c);
+  while ( (c = getchar()) != EOF)
+    write(1, &c, 1);
+
 }
 
 
-int getchar_(void)
+
+int getchar(void)
 {
   char c;
 
-  return (read(0, &c, 1) == 1) ? (unsigned char) c : EOF;
-}
+  return read(0, &c, 1) == 1 ? (unsigned char) c : EOF;
 
-void putchar_(char c)
-{
-  write(1, &c, 1);
 }
