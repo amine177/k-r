@@ -4,22 +4,19 @@
 
 int main(int argc, char* argv[static argc]) {
 
+  char prev = 'a';
+  char c;
 
-	char c;
-	char prev = 0;
-	while ((c = getchar()) != EOF) {
-		if (c != ' ') {
-			if (prev == ' ') {
-				putchar(' ');
-				putchar(c);
-			} else {
-				putchar(c);
-			}
-		}	
+  while((c = getchar())!=EOF) {
 
-		prev = c;
-	}
+    if (((c == ' ' || c == '\t')
+	 && (prev != ' ' && prev != '\t'))
+	|| (c != ' ' && c != '\t')) {
+      putchar(c);
+    }
 
+    prev = c;
+  }
 
-	return 0;
+  return 0; 
 }
