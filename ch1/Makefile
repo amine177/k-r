@@ -18,3 +18,12 @@ exe-1.8: exe-1.8.o
 
 exe-1.9: exe-1.9.o
 	cc exe-1.9.c -o exe-1.9.o
+
+exe-1.10: exe-1.10.o
+	cc exe-1.10.c -o exe-1.10.o
+
+wc: wc.o
+	cc wc.c -o wc.o
+
+wc_v2: wc_v2.o
+	cc wc_v2.c -o wc_v2.o
